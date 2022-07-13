@@ -16,7 +16,29 @@ function BookTable() {
     fetchBooks();
   }, []);
 
-  useEffect(() => {}, [sortBy]);
+  useEffect(() => {
+    const sortedArray = [...books];
+    let field;
+    switch (sortBy.field) {
+      case "ID":
+        field = "id";
+        break;
+      case "Name":
+        field = "title";
+        break;
+      case "Author":
+        field = "author";
+        break;
+      case "ISBN":
+        field = "isbn";
+        break;
+    }
+
+    sortedArray.sort((a, b) =>
+      a[field] > b[field] ? (sortBy.sort ? 1 : -1) : sortBy.sort ? -1 : 1
+    );
+    setBooks(sortedArray);
+  }, [sortBy]);
 
   useEffect(() => {
     fetchBooks(currentPage);
